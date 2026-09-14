@@ -1,26 +1,25 @@
-# Learning notes
+# What is where?:
 
-## JWT Pizza code study and debugging
 
-As part of `Deliverable ⓵ Development deployment: JWT Pizza`, start up the application and debug through the code until you understand how it works. During the learning process fill out the following required pieces of information in order to demonstrate that you have successfully completed the deliverable.
+| User activity                                                       | Frontend component                                           | Backend endpoints                                                                           | Database SQL                               |
+| ------------------------------------------------------------------- | ------------------------------------------------------------ | ------------------------------------------------------------------------------------------- | ------------------------------------------ |
+| View home page                                                      | jwt-pizza/src/views/home.tsx                                 | na                                                                                          | na                                         |
+| Register new user ([t@jwt.com](mailto:t@jwt.com), pw: test)         | jwt-pizza/src/views/register.tsx                             | jwt-pizza-service/src/routes/authRouter.js                                                  | jwt-pizza-service/src/database/database.js |
+| Login new user ([t@jwt.com](mailto:t@jwt.com), pw: test)            | jwt-pizza/src/views/login.tsx                                | jwt-pizza-service/src/routes/authRouter.js                                                  | jwt-pizza-service/src/database/database.js |
+| Order pizza                                                         | jwt-pizza/src/views/menu.tsx jwt-pizza/src/views/payment.tsx | jwt-pizza-service/src/routes/orderRouter.js jwt-pizza-service/src/routes/franchiseRouter.js | jwt-pizza-service/src/database/database.js |
+| Verify pizza                                                        | jwt-pizza/src/views/delivery.tsx                             | jwt-pizza/src/service/httpPizzaService.ts                                                   | nan                                        |
+| View profile page                                                   | jwt-pizza/src/views/dinerDashboard.tsx                       | jwt-pizza-service/src/routes/orderRouter.js jwt-pizza-service/src/routes/userRouter.js      | jwt-pizza-service/src/database/database.js |
+| View franchise (as diner)                                           | jwt-pizza/src/views/franchiseDashboard.tsx                   | jwt-pizza-service/src/routes/franchiseRouter.js                                             | jwt-pizza-service/src/database/database.js |
+| Logout                                                              | jwt-pizza/src/views/logout.tsx                               | jwt-pizza-service/src/routes/authRouter.js                                                  | jwt-pizza-service/src/database/database.js |
+| View About page                                                     | jwt-pizza/src/views/about.tsx                                | na                                                                                          | na                                         |
+| View History page                                                   | jwt-pizza/src/views/history.tsx                              | na                                                                                          | na                                         |
+| Login as franchisee ([f@jwt.com](mailto:f@jwt.com), pw: franchisee) | jwt-pizza/src/views/login.tsx                                | jwt-pizza-service/src/routes/authRouter.js                                                  | jwt-pizza-service/src/database/database.js |
+| View franchise (as franchisee)                                      | jwt-pizza/src/views/franchiseDashboard.tsx                   | jwt-pizza-service/src/routes/franchiseRouter.js                                             | jwt-pizza-service/src/database/database.js |
+| Create a store                                                      | jwt-pizza/src/views/createStore.tsx                          | jwt-pizza-service/src/routes/franchiseRouter.js                                             | jwt-pizza-service/src/database/database.js |
+| Close a store                                                       | jwt-pizza/src/views/closeStore.tsx                           | jwt-pizza-service/src/routes/franchiseRouter.js                                             | jwt-pizza-service/src/database/database.js |
+| Login as admin ([a@jwt.com](mailto:a@jwt.com), pw: admin)           | jwt-pizza/src/views/login.tsx                                | jwt-pizza-service/src/routes/authRouter.js                                                  | jwt-pizza-service/src/database/database.js |
+| View Admin page                                                     | jwt-pizza/src/views/adminDashboard.tsx                       | jwt-pizza-service/src/routes/franchiseRouter.js                                             | jwt-pizza-service/src/database/database.js |
+| Create a franchise for [t@jwt.com](mailto:t@jwt.com)                | jwt-pizza/src/views/createFranchise.tsx                      | jwt-pizza-service/src/routes/franchiseRouter.js                                             | jwt-pizza-service/src/database/database.js |
+| Close the franchise for [t@jwt.com](mailto:t@jwt.com)               | jwt-pizza/src/views/closeFranchise.tsx                       | jwt-pizza-service/src/routes/franchiseRouter.js                                             | jwt-pizza-service/src/database/database.js |
 
-| User activity                                       | Frontend component | Backend endpoints | Database SQL |
-| --------------------------------------------------- | ------------------ | ----------------- | ------------ |
-| View home page                                      |                    |                   |              |
-| Register new user<br/>(t@jwt.com, pw: test)         |                    |                   |              |
-| Login new user<br/>(t@jwt.com, pw: test)            |                    |                   |              |
-| Order pizza                                         |                    |                   |              |
-| Verify pizza                                        |                    |                   |              |
-| View profile page                                   |                    |                   |              |
-| View franchise<br/>(as diner)                       |                    |                   |              |
-| Logout                                              |                    |                   |              |
-| View About page                                     |                    |                   |              |
-| View History page                                   |                    |                   |              |
-| Login as franchisee<br/>(f@jwt.com, pw: franchisee) |                    |                   |              |
-| View franchise<br/>(as franchisee)                  |                    |                   |              |
-| Create a store                                      |                    |                   |              |
-| Close a store                                       |                    |                   |              |
-| Login as admin<br/>(a@jwt.com, pw: admin)           |                    |                   |              |
-| View Admin page                                     |                    |                   |              |
-| Create a franchise for t@jwt.com                    |                    |                   |              |
-| Close the franchise for t@jwt.com                   |                    |                   |              |
+
