@@ -26,6 +26,12 @@ jobs:
       - name: Lint
         run: npm run lint
 
+      - name: Install Playwright browsers
+        run: npx playwright install --with-deps chromium
+
+      - name: Tests
+        run: npm test
+
       - name: set version
         id: set_version
         run: |
