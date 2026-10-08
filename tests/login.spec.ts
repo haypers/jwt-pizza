@@ -1,8 +1,9 @@
-import { test, expect } from 'playwright-test-coverage';
+import { test, expect } from './testSetup';
+import { basicInit } from './testUtils';
 
 test.describe('login page', () => {
   test('shows the login form for a logged-out diner', async ({ page }) => {
-    await page.goto('/');
+    await basicInit(page);
 
     await page.getByRole('navigation', { name: 'Global' }).getByRole('link', { name: 'Login' }).click();
     await expect(page).toHaveURL('/login');
@@ -14,7 +15,8 @@ test.describe('login page', () => {
   });
 
   test('sends a diner to register from the login page', async ({ page }) => {
-    await page.goto('/login');
+    await basicInit(page);
+    await page.getByRole('navigation', { name: 'Global' }).getByRole('link', { name: 'Login' }).click();
 
     await page.getByRole('main').getByText('Register').click();
     await expect(page).toHaveURL('/register');

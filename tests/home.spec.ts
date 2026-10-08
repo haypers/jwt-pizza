@@ -1,8 +1,9 @@
-import { test, expect } from 'playwright-test-coverage';
+import { test, expect } from './testSetup';
+import { basicInit } from './testUtils';
 
 test.describe('home page', () => {
   test('shows the hero and lets a diner start an order', async ({ page }) => {
-    await page.goto('/');
+    await basicInit(page);
 
     await expect(page).toHaveTitle('JWT Pizza');
     await expect(page.getByText('JWT Pizza').first()).toBeVisible();
@@ -15,7 +16,7 @@ test.describe('home page', () => {
   });
 
   test('opens about from the footer', async ({ page }) => {
-    await page.goto('/');
+    await basicInit(page);
 
     await page.getByRole('contentinfo').getByRole('link', { name: 'About' }).click();
     await expect(page).toHaveURL('/about');
