@@ -1,6 +1,6 @@
 # 🍕 JWT Pizza
 
-![Coverage badge](https://pizza-factory.cs329.click/api/badge/haypers/jwtpizzacoverage)
+![Coverage badge](https://pizza-factory.cs329.click/api/badge/haypers/jwtpizzacoverage?t=2)
 
 [![CI Pipeline](https://github.com/haypers/jwt-pizza/actions/workflows/ci.yml/badge.svg)](https://github.com/haypers/jwt-pizza/actions/workflows/ci.yml)
 
@@ -151,4 +151,3 @@ export default function App() {
 ### Icons
 
 [HeroIcons](https://heroicons.com/) - MIT license
-commit trigger
