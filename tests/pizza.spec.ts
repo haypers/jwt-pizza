@@ -1,0 +1,18 @@
+import { test, expect } from 'playwright-test-coverage';
+
+test('purchase with login', async ({ page }) => {await page.goto('http://localhost:5173/');
+await page.getByRole('link', { name: 'Order' }).click();
+await page.getByRole('combobox').selectOption('1');
+await page.getByRole('link', { name: 'Image Description Veggie A' }).click();
+await page.getByRole('link', { name: 'Image Description Pepperoni' }).click();
+await page.getByRole('button', { name: 'Checkout' }).click();
+await page.getByRole('main').getByText('Register').click();
+await page.getByRole('textbox', { name: 'Full name' }).fill('hayden');
+await page.getByRole('textbox', { name: 'Full name' }).press('Tab');
+await page.getByRole('textbox', { name: 'Email address' }).fill('haypers@gmail.com');
+await page.getByRole('textbox', { name: 'Email address' }).press('Tab');
+await page.getByRole('textbox', { name: 'Password' }).fill('testing');
+await page.getByRole('button', { name: 'Register' }).click();
+await page.getByRole('button', { name: 'Pay now' }).click();
+await page.getByRole('button', { name: 'Verify' }).click();
+await page.getByRole('button', { name: 'Close' }).click();});
