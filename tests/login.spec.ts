@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test';
+import { test, expect } from 'playwright-test-coverage';
 
 test.describe('login page', () => {
   test('shows the login form for a logged-out diner', async ({ page }) => {
