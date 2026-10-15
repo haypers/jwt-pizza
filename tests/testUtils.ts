@@ -145,6 +145,10 @@ export async function basicInit(page: Page) {
       current.name = updated.name;
     }
     if (updated.email && updated.email !== current.email) {
+      if (validUsers[updated.email]) {
+        await route.fulfill({ status: 409, json: { message: 'email already used' } });
+        return;
+      }
       delete validUsers[current.email!];
       current.email = updated.email;
       validUsers[current.email] = current;

@@ -60,8 +60,11 @@ test.describe('admin dashboard', () => {
     await expect(users.getByRole('row', { name: /Diner 9/ })).toBeVisible();
     await expect(users.getByText('Kai Chen')).toHaveCount(0);
 
-    const filtered = page.waitForRequest((request) => request.method() === 'GET' && request.url().includes('/api/user?') && request.url().includes('Buddy'));
-    await page.getByPlaceholder('Filter users').fill('Buddy');
+    const filtered = page.waitForRequest((request) => {
+      const url = request.url();
+      return request.method() === 'GET' && url.includes('/api/user?') && url.includes('Buddy') && !url.includes('%');
+    });
+    await page.getByPlaceholder('Filter users').fill('  Buddy% ');
     await users.getByRole('button', { name: 'Search' }).click();
     await filtered;
     await expect(users.getByRole('cell', { name: 'b@jwt.com' })).toBeVisible();
@@ -69,5 +72,9 @@ test.describe('admin dashboard', () => {
 
     await users.getByRole('row', { name: /b@jwt.com/ }).getByRole('button', { name: 'Delete' }).click();
     await expect(users.getByRole('cell', { name: 'b@jwt.com' })).toHaveCount(0);
+
+    await page.getByPlaceholder('Filter users').fill('nobody');
+    await users.getByRole('button', { name: 'Search' }).click();
+    await expect(users.getByText('No users found')).toBeVisible();
   });
 });

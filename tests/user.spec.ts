@@ -34,3 +34,22 @@ test('updateUser', async ({ page }) => {
 
   await expect(page.getByRole('main')).toContainText('pizza dinerx');
 });
+
+test('updateUser shows an error and keeps the dialog open when the email is taken', async ({ page }) => {
+  await basicInit(page);
+  await page.getByRole('link', { name: 'Register' }).click();
+  await page.getByRole('textbox', { name: 'Full name' }).fill('pizza diner');
+  await page.getByRole('textbox', { name: 'Email address' }).fill(`taken${Math.floor(Math.random() * 10000)}@jwt.com`);
+  await page.getByRole('textbox', { name: 'Password' }).fill('diner');
+  await page.getByRole('button', { name: 'Register' }).click();
+
+  await page.getByRole('link', { name: 'pd' }).click();
+  await page.getByRole('button', { name: 'Edit' }).click();
+  await page.getByRole('textbox').nth(1).fill('a@jwt.com');
+  await page.getByRole('button', { name: 'Update' }).click();
+
+  const dialog = page.locator('#hs-jwt-modal');
+  await expect(dialog).toContainText('email already used');
+  await expect(dialog).toHaveClass(/\bopen\b/);
+  await expect(page.getByRole('main')).toContainText('pizza diner');
+});

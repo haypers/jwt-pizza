@@ -15,6 +15,7 @@ interface Props {
 export default function DinerDashboard(props: Props) {
   const user = props.user || ({} as User);
   const [orders, setOrders] = React.useState<Order[]>([]);
+  const [updateMessage, setUpdateMessage] = React.useState('');
   const nameRef = React.useRef<HTMLInputElement>(null);
   const emailRef = React.useRef<HTMLInputElement>(null);
   const passwordRef = React.useRef<HTMLInputElement>(null);
@@ -42,9 +43,14 @@ export default function DinerDashboard(props: Props) {
       roles: user.roles,
     };
 
-    const saved = await pizzaService.updateUser(updatedUser);
-    props.setUser(saved);
-    closeEditDialog();
+    try {
+      const saved = await pizzaService.updateUser(updatedUser);
+      props.setUser(saved);
+      setUpdateMessage('');
+      closeEditDialog();
+    } catch (error) {
+      setUpdateMessage(JSON.stringify(error));
+    }
   }
 
   React.useEffect(() => {
@@ -70,7 +76,14 @@ export default function DinerDashboard(props: Props) {
         <div className="hs-tooltip inline-block">
           <img className="hs-tooltip-toggle relative inline-block size-[96px] rounded-full ring-2 ring-white hover:z-10" src="https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=facearea&facepad=2&w=300&h=300&q=80" alt="Employee stock photo" />
         </div>
-        <Button title="Edit" className="w-16 p-0" onPress={() => HSOverlay.open(document.getElementById('hs-jwt-modal')!)} />
+        <Button
+          title="Edit"
+          className="w-16 p-0"
+          onPress={() => {
+            setUpdateMessage('');
+            HSOverlay.open(document.getElementById('hs-jwt-modal')!);
+          }}
+        />
 
         <div className="my-4 text-lg text-orange-200 text-start grid grid-cols-5 gap-2">
           <div className="font-semibold text-orange-400">name:</div> <div className="col-span-4">{user.name}</div>
@@ -145,6 +158,7 @@ export default function DinerDashboard(props: Props) {
               </button>
             </div>
             <div className="p-4 overflow-y-scroll max-h-52">
+              <div className="text-red-700 text-sm">{updateMessage}</div>
               <div className="my-4 text-lg text-start grid grid-cols-5 gap-2 items-center">
                 <div className="font-semibold">name:</div>
                 <input type="text" className="col-span-4 border border-gray-300 rounded-md p-1" defaultValue={user.name} ref={nameRef} />

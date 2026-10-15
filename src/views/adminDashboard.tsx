@@ -53,8 +53,9 @@ export default function AdminDashboard(props: Props) {
   }
 
   function filterUsers() {
+    const cleaned = (filterUserRef.current?.value ?? '').trim().replace(/[%_\\*]/g, '');
     setUserPage(1);
-    setUserNameFilter(`*${filterUserRef.current?.value ?? ''}*`);
+    setUserNameFilter(`*${cleaned}*`);
   }
 
   async function removeUser(user: User) {
@@ -162,6 +163,13 @@ export default function AdminDashboard(props: Props) {
                         </tr>
                       </thead>
                       <tbody className="divide-y divide-gray-200">
+                        {userList.users.length === 0 && (
+                          <tr>
+                            <td colSpan={4} className="px-6 py-4 text-center text-sm text-gray-800">
+                              No users found
+                            </td>
+                          </tr>
+                        )}
                         {userList.users.map((listedUser) => (
                           <tr key={listedUser.id} className="hover:bg-gray-100">
                             <td className="text-start px-2 whitespace-nowrap text-sm font-medium text-gray-800">{listedUser.name}</td>

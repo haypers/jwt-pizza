@@ -41,15 +41,19 @@ class HttpPizzaService implements PizzaService {
     });
   }
 
+  private storeToken(token: string) {
+    localStorage.setItem('token', token);
+  }
+
   async login(email: string, password: string): Promise<User> {
     const { user, token } = await this.callEndpoint('/api/auth', 'PUT', { email, password });
-    localStorage.setItem('token', token);
+    this.storeToken(token);
     return Promise.resolve(user);
   }
 
   async register(name: string, email: string, password: string): Promise<User> {
     const { user, token } = await this.callEndpoint('/api/auth', 'POST', { name, email, password });
-    localStorage.setItem('token', token);
+    this.storeToken(token);
     return Promise.resolve(user);
   }
 
@@ -60,7 +64,7 @@ class HttpPizzaService implements PizzaService {
 
   async updateUser(updatedUser: User): Promise<User> {
     const { user, token } = await this.callEndpoint(`/api/user/${updatedUser.id}`, 'PUT', updatedUser);
-    localStorage.setItem('token', token);
+    this.storeToken(token);
     return Promise.resolve(user);
   }
 
