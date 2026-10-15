@@ -90,6 +90,32 @@ export async function basicInit(page: Page) {
     await route.fulfill({ json: loggedInUser ?? null });
   });
 
+  await page.route(/\/api\/user\/\d+$/, async (route) => {
+    expect(route.request().method()).toBe('PUT');
+    const updated = route.request().postDataJSON() as User;
+    const userId = route.request().url().match(/\/api\/user\/(\d+)$/)?.[1];
+    const current = Object.values(validUsers).find((candidate) => candidate.id === userId);
+    if (!current) {
+      await route.fulfill({ status: 404, json: { message: 'unknown user' } });
+      return;
+    }
+
+    if (updated.name) {
+      current.name = updated.name;
+    }
+    if (updated.email && updated.email !== current.email) {
+      delete validUsers[current.email!];
+      current.email = updated.email;
+      validUsers[current.email] = current;
+    }
+    if (updated.password) {
+      current.password = updated.password;
+    }
+    loggedInUser = current;
+    const { password: _password, ...publicUser } = current;
+    await route.fulfill({ json: { user: publicUser, token: 'tttttt' } });
+  });
+
   await page.route('*/**/api/order/menu', async (route) => {
     expect(route.request().method()).toBe('GET');
     await route.fulfill({
