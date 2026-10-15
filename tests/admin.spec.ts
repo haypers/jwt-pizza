@@ -62,7 +62,7 @@ test.describe('admin dashboard', () => {
 
     const filtered = page.waitForRequest((request) => request.method() === 'GET' && request.url().includes('/api/user?') && request.url().includes('Buddy'));
     await page.getByPlaceholder('Filter users').fill('Buddy');
-    await users.getByRole('button', { name: 'Submit' }).click();
+    await users.getByRole('button', { name: 'Search' }).click();
     await filtered;
     await expect(users.getByRole('cell', { name: 'b@jwt.com' })).toBeVisible();
     await expect(users.getByText('Kai Chen')).toHaveCount(0);
