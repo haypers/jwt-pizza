@@ -90,10 +90,51 @@ export async function basicInit(page: Page) {
     await route.fulfill({ json: loggedInUser ?? null });
   });
 
+  const listedUsers: User[] = [
+    { id: '3', name: 'Kai Chen', email: 'd@jwt.com', roles: [{ role: Role.Diner }] },
+    { id: '5', name: 'Buddy', email: 'b@jwt.com', roles: [{ role: Role.Diner }] },
+    ...Array.from({ length: 9 }, (_, index) => ({
+      id: String(10 + index),
+      name: `Diner ${index + 1}`,
+      email: `diner${index + 1}@jwt.com`,
+      roles: [{ role: Role.Diner }],
+    })),
+  ];
+
+  await page.route(/\/api\/user\/?(?:\?.*)?$/, async (route) => {
+    expect(route.request().method()).toBe('GET');
+    const url = new URL(route.request().url());
+    const pageNumber = Number(url.searchParams.get('page') ?? '1');
+    const limit = Number(url.searchParams.get('limit') ?? '10');
+    const nameFilter = url.searchParams.get('name') ?? '*';
+    const pattern = `^${nameFilter
+      .split('*')
+      .map((part) => part.replace(/[.+?^${}()|[\]\\]/g, '\\$&'))
+      .join('.*')}$`;
+    const matcher = new RegExp(pattern, 'i');
+    const matched = listedUsers.filter((user) => matcher.test(user.name ?? ''));
+    const start = (pageNumber - 1) * limit;
+    await route.fulfill({
+      json: {
+        users: matched.slice(start, start + limit),
+        more: start + limit < matched.length,
+      },
+    });
+  });
+
   await page.route(/\/api\/user\/\d+$/, async (route) => {
+    const userId = route.request().url().match(/\/api\/user\/(\d+)$/)?.[1];
+    if (route.request().method() === 'DELETE') {
+      const index = listedUsers.findIndex((user) => user.id === userId);
+      if (index >= 0) {
+        listedUsers.splice(index, 1);
+      }
+      await route.fulfill({ json: { message: 'user deleted' } });
+      return;
+    }
+
     expect(route.request().method()).toBe('PUT');
     const updated = route.request().postDataJSON() as User;
-    const userId = route.request().url().match(/\/api\/user\/(\d+)$/)?.[1];
     const current = Object.values(validUsers).find((candidate) => candidate.id === userId);
     if (!current) {
       await route.fulfill({ status: 404, json: { message: 'unknown user' } });
