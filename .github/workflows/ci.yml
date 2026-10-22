@@ -67,7 +67,7 @@ jobs:
       url: https://pizza.ofthegoverned.com
     steps:
       - name: Create OIDC token to AWS
-        uses: aws-actions/configure-aws-credentials@v4
+        uses: aws-actions/configure-aws-credentials@v6.3.0
         with:
           audience: sts.amazonaws.com
           aws-region: us-east-1
