@@ -5,6 +5,11 @@ on:
     branches:
       - main
   workflow_dispatch:
+
+permissions:
+  id-token: write # Required for requesting the JWT
+  contents: read  # Required for actions/checkout
+
 jobs:
   build:
     name: Build
@@ -49,19 +54,9 @@ jobs:
           npm run build
           cp dist/index.html dist/404.html
 
-      - name: Update dist artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: package
-          path: dist/
-
   deploy:
     needs: build
-    permissions:
-      id-token: write
     runs-on: ubuntu-latest
-    env:
-      version: ${{ needs.build.outputs.version }}
     environment:
       name: production
       url: https://pizza.ofthegoverned.com
@@ -73,14 +68,9 @@ jobs:
           aws-region: us-east-1
           role-to-assume: arn:aws:iam::${{ secrets.AWS_ACCOUNT }}:role/${{ secrets.CI_IAM_ROLE }}
 
-      - name: Download dist artifact
-        uses: actions/download-artifact@v4
-        with:
-          name: package
-          path: dist/
-
       - name: Push to AWS S3
         run: |
-          echo Deploying $version
+          mkdir dist
+          printf "<h1>CloudFront deployment with GitHub Actions</h1>" > dist/index.html
           aws s3 cp dist s3://${{ secrets.APP_BUCKET }} --recursive
           aws cloudfront create-invalidation --distribution-id ${{ secrets.DISTRIBUTION_ID }} --paths "/*"
